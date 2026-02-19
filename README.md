@@ -1,105 +1,45 @@
-# AI Assistant Browser (GeckoView Plan + Core Module)
+# AI Browser (Android + AI Assistant)
 
-This repository currently contains a Kotlin core module that implements two critical foundations for the requested Android browser fork:
+This repository now includes:
 
-1. **AI assistant settings model + serialization** (providers/prompts/capture/privacy compatible)
-2. **Overlay crop math** for converting a free-form loop selection into a clamped crop rectangle with margin
+1. A new Android app module (`app`) with a normal browser-like UI (toolbar + URL bar + web rendering via `WebView`).
+2. The reusable `aiassistant-core` module for AI settings, crop math, provider failover, and prompt behavior.
 
-> Note: The current repository does not include Mozilla Reference Browser app sources yet. This code is prepared to be integrated into a real GeckoView browser project.
+## Current app behavior
 
-## What is available now
+- Standard browsing flow: URL input, Go, Back/Forward.
+- Explicit `AI` action in toolbar.
+- AI entry uses a visible BottomSheet (no hidden/invisible mode).
+- Separate Settings screen for AI-related options.
 
-- `aiassistant-core` Gradle module (Kotlin/JVM)
-- Settings domain models:
-  - Providers
-  - Prompt templates
-  - Capture/privacy options
-- JSON codec via `kotlinx.serialization`
-- Crop rectangle math utility:
-  - Calculates bounding box from stroke points
-  - Applies margin
-  - Clamps to visible viewport bounds
-- Unit tests for:
-  - Crop + margin + clamp
-  - Settings serialization roundtrip
-
-## Build & test
+## Build Android APK
 
 ```bash
-gradle :aiassistant-core:test
+./scripts/build_android_apk.sh
 ```
 
-## Release workflow (current stage)
+If `gradlew` is missing, the script falls back to system `gradle`.
+Expected output path:
+- `app/build/outputs/apk/debug/*.apk`
 
-To create a source release archive for the current state:
+## Source release package
 
 ```bash
-./scripts/create_release.sh 0.1.1
+./scripts/create_release.sh 0.2.0
 ```
 
 Output:
-- `build/releases/camera-classifier-v0.1.1-source.tar.gz`
+- `build/releases/camera-classifier-v0.2.0-source.tar.gz`
 
-## Persian user guide
+## Persian documentation
 
-A Persian usage guide is available at:
 - `docs/USAGE_FA.md`
+- `docs/AI_ASSISTANT_SPEC_FA.md`
+- `docs/ARCHIVE_REQUESTS_FA.md`
+- `docs/APK_BUILD_STATUS_FA.md`
 
-This guide will be updated in future changes as requested.
+## Notes
 
-
-## APK and GitHub package status
-
-- This repository currently does **not** contain a full Android app module (`app`) or `gradlew`, so an installable APK cannot be produced yet.
-- Added `scripts/build_android_apk.sh` to auto-build APK as soon as full Android sources are present.
-- Added archival docs to preserve older requirements and explanations in the repository/package:
-  - `docs/ARCHIVE_REQUESTS_FA.md`
-  - `docs/APK_BUILD_STATUS_FA.md`
-
-
-## UX direction requested
-
-- Keep overall app look close to the base browser UI.
-- AI capability is limited to screenshot selection + sending to configured APIs (especially OpenAI/Gemini).
-- AI controls should be configured from Settings, but the feature itself must remain explicit (no hidden/invisible mode).
-- Added technical foundations for provider ordering/failover and optional prompt attachment in `aiassistant-core`.
-
-## Integration guidance for Android Reference Browser fork
-
-When you fork `mozilla-mobile/android-components` (`reference-browser`):
-
-1. Add this module (or copy files into an Android module).
-2. Wire `CropMath.rectFromStroke(...)` to overlay path points.
-3. Capture visible bitmap from GeckoView using `capturePixels` or `PixelCopy`.
-4. Crop using returned rectangle, then downscale to ~1280-1600 width before upload.
-5. Persist non-sensitive settings in SharedPreferences/DataStore and store API keys in EncryptedSharedPreferences.
-6. Send active prompt + image to active provider.
-7. Render response in BottomSheet with Copy/Close.
-
-## Request/Response JSON shape (configurable concept)
-
-Suggested default OpenAI-like request body:
-
-```json
-{
-  "model": "gpt-4.1-mini",
-  "input": [
-    {
-      "role": "user",
-      "content": [
-        { "type": "input_text", "text": "<active_prompt>" },
-        { "type": "input_image", "image_base64": "<base64_jpeg>" }
-      ]
-    }
-  ]
-}
-```
-
-Response extraction strategy:
-- Parse provider-specific `output_text` path, configurable per provider adapter.
-
-## Current limitations
-
-- No GeckoView Android app module is included in this repository yet.
-- No installable APK is generated from this repository in the current stage.
-- Current deliverable is the reusable core logic required for later milestones.
+- AI logic is intentionally explicit and user-visible.
+- No stealth/hidden behavior is implemented.
+- For production browser parity (tabs, GeckoView, PixelCopy selection overlay), integrate this module into a full Reference Browser fork as the next milestone.
