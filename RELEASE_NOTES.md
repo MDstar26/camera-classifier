@@ -1,14 +1,23 @@
 # Release Notes
 
-## v0.1.1 (current)
+## v0.1.2 (current)
+
+### Added
+- Provider failover core logic (`AiFailoverPlanner`) with 2 attempts and 10s timeout policy.
+- Provider runtime state to disable failed endpoints and continue with remaining ordered providers.
+- Optional prompt mode (`None` or selected template).
+- Multiple-choice number extraction helper from AI text answers.
+- Tests for failover plan, prompt resolution, and MCQ number extraction.
+
+### Changed
+- Updated Persian/English docs to keep browser UX close to base app and AI flow explicit in settings.
+
+## v0.1.1
 
 ### Added
 - Persian usage guide in `docs/USAGE_FA.md`.
-- Source release packaging script `scripts/create_release.sh` to generate a tagged snapshot archive.
-- README section for release workflow and Persian documentation.
-
-### Changed
-- Clarified that current deliverable is the reusable AI core module, not a full Android APK yet.
+- Source release packaging script `scripts/create_release.sh`.
+- README release workflow and Persian documentation references.
 
 ## v0.1.0
 

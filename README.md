@@ -1,27 +1,30 @@
-# AI Assistant Browser (GeckoView Plan + Core Module)
+# AI Assistant Browser (GeckoView-compatible Core)
 
-This repository currently contains a Kotlin core module that implements two critical foundations for the requested Android browser fork:
+This repository contains a Kotlin core module for integrating a **visible and user-controlled** AI Assistant into a standard open-source Android browser base (e.g., Reference Browser).
 
-1. **AI assistant settings model + serialization** (providers/prompts/capture/privacy compatible)
-2. **Overlay crop math** for converting a free-form loop selection into a clamped crop rectangle with margin
+## Product direction (important)
 
-> Note: The current repository does not include Mozilla Reference Browser app sources yet. This code is prepared to be integrated into a real GeckoView browser project.
+- Browser look/behavior should stay close to the base app (normal tabs/address/navigation UX).
+- AI features must be placed in **Settings + explicit user action**.
+- No hidden/invisible/camouflage behavior is implemented.
 
-## What is available now
+## What is implemented now
 
-- `aiassistant-core` Gradle module (Kotlin/JVM)
-- Settings domain models:
+- `aiassistant-core` Gradle module (Kotlin/JVM).
+- Selection crop math (`CropMath`) for loop/ellipse overlays with margin + viewport clamp.
+- Serializable settings model for:
   - Providers
   - Prompt templates
   - Capture/privacy options
-- JSON codec via `kotlinx.serialization`
-- Crop rectangle math utility:
-  - Calculates bounding box from stroke points
-  - Applies margin
-  - Clamps to visible viewport bounds
-- Unit tests for:
-  - Crop + margin + clamp
-  - Settings serialization roundtrip
+  - Provider priority order
+  - Optional no-prompt mode
+- Failover planning logic:
+  - Provider priority list
+  - 2 attempts per provider
+  - 10s timeout per attempt
+  - Runtime disable/skip failed providers
+- Helper parser for multiple-choice style numeric option extraction from model output.
+- Unit tests for crop math, settings serialization, and routing/failover/prompt resolution.
 
 ## Build & test
 
@@ -31,58 +34,19 @@ gradle :aiassistant-core:test
 
 ## Release workflow (current stage)
 
-To create a source release archive for the current state:
-
 ```bash
-./scripts/create_release.sh 0.1.1
+./scripts/create_release.sh 0.1.2
 ```
 
 Output:
-- `build/releases/camera-classifier-v0.1.1-source.tar.gz`
+- `build/releases/camera-classifier-v0.1.2-source.tar.gz`
 
-## Persian user guide
+## Persian guide
 
-A Persian usage guide is available at:
 - `docs/USAGE_FA.md`
-
-This guide will be updated in future changes as requested.
-
-## Integration guidance for Android Reference Browser fork
-
-When you fork `mozilla-mobile/android-components` (`reference-browser`):
-
-1. Add this module (or copy files into an Android module).
-2. Wire `CropMath.rectFromStroke(...)` to overlay path points.
-3. Capture visible bitmap from GeckoView using `capturePixels` or `PixelCopy`.
-4. Crop using returned rectangle, then downscale to ~1280-1600 width before upload.
-5. Persist non-sensitive settings in SharedPreferences/DataStore and store API keys in EncryptedSharedPreferences.
-6. Send active prompt + image to active provider.
-7. Render response in BottomSheet with Copy/Close.
-
-## Request/Response JSON shape (configurable concept)
-
-Suggested default OpenAI-like request body:
-
-```json
-{
-  "model": "gpt-4.1-mini",
-  "input": [
-    {
-      "role": "user",
-      "content": [
-        { "type": "input_text", "text": "<active_prompt>" },
-        { "type": "input_image", "image_base64": "<base64_jpeg>" }
-      ]
-    }
-  ]
-}
-```
-
-Response extraction strategy:
-- Parse provider-specific `output_text` path, configurable per provider adapter.
 
 ## Current limitations
 
-- No GeckoView Android app module is included in this repository yet.
-- No installable APK is generated from this repository in the current stage.
-- Current deliverable is the reusable core logic required for later milestones.
+- This repository still does not contain a full GeckoView Android app module.
+- No installable APK is produced yet from this repository state.
+- Current deliverable is core business logic that can be plugged into the browser fork.

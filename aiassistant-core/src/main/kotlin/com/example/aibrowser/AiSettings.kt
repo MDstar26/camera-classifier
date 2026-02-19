@@ -33,8 +33,10 @@ data class CaptureSettings(
 data class AiAssistantSettings(
     val providers: List<ProviderConfig> = emptyList(),
     val activeProviderId: String? = null,
+    val providerPriorityOrder: List<String> = emptyList(),
     val prompts: List<PromptTemplate> = emptyList(),
     val activePromptId: String? = null,
+    val allowNoPrompt: Boolean = true,
     val capture: CaptureSettings = CaptureSettings()
 )
 

@@ -18,6 +18,7 @@ class AiSettingsCodecTest {
                 )
             ),
             activeProviderId = "openai",
+            providerPriorityOrder = listOf("openai", "gemini"),
             prompts = listOf(
                 PromptTemplate(
                     id = "study",
@@ -26,6 +27,7 @@ class AiSettingsCodecTest {
                 )
             ),
             activePromptId = "study",
+            allowNoPrompt = true,
             capture = CaptureSettings(marginDp = 64, autoCaptureSeconds = 3, jpegQuality = 85)
         )
 
