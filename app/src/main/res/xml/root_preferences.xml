@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="AI Assistant">
+        <EditTextPreference
+            android:key="active_provider"
+            android:title="Active provider"
+            android:summary="مثال: OpenAI یا Gemini" />
+
+        <EditTextPreference
+            android:key="provider_order"
+            android:title="Provider order"
+            android:summary="مثال: openai,gemini,custom" />
+
+        <EditTextPreference
+            android:key="active_prompt"
+            android:title="Active prompt"
+            android:summary="Prompt انتخابی یا خالی" />
+
+        <SwitchPreferenceCompat
+            android:key="send_prompt"
+            android:title="Send prompt with screenshot"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Failover policy">
+        <EditTextPreference
+            android:key="provider_timeout"
+            android:title="Timeout per provider (seconds)"
+            android:summary="پیش‌فرض 10" />
+
+        <EditTextPreference
+            android:key="provider_attempts"
+            android:title="Max attempts per provider"
+            android:summary="پیش‌فرض 2" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
