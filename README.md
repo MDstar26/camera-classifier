@@ -48,6 +48,15 @@ A Persian usage guide is available at:
 This guide will be updated in future changes as requested.
 
 
+## APK and GitHub package status
+
+- This repository currently does **not** contain a full Android app module (`app`) or `gradlew`, so an installable APK cannot be produced yet.
+- Added `scripts/build_android_apk.sh` to auto-build APK as soon as full Android sources are present.
+- Added archival docs to preserve older requirements and explanations in the repository/package:
+  - `docs/ARCHIVE_REQUESTS_FA.md`
+  - `docs/APK_BUILD_STATUS_FA.md`
+
+
 ## UX direction requested
 
 - Keep overall app look close to the base browser UI.

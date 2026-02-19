@@ -3,6 +3,8 @@
 ## v0.1.1 (current)
 
 ### Added
+- APK build guard script `scripts/build_android_apk.sh` for when Android app sources are available.
+- Archive docs for older requirements and package continuity (`docs/ARCHIVE_REQUESTS_FA.md`, `docs/APK_BUILD_STATUS_FA.md`).
 - Persian usage guide in `docs/USAGE_FA.md`.
 - Source release packaging script `scripts/create_release.sh` to generate a tagged snapshot archive.
 - README section for release workflow and Persian documentation.
