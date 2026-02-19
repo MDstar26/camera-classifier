@@ -1,13 +1,13 @@
 # AI Assistant Browser (GeckoView Plan + Core Module)
 
-This repository now contains a Kotlin core module that implements two critical foundations for the requested Android browser fork:
+This repository currently contains a Kotlin core module that implements two critical foundations for the requested Android browser fork:
 
 1. **AI assistant settings model + serialization** (providers/prompts/capture/privacy compatible)
 2. **Overlay crop math** for converting a free-form loop selection into a clamped crop rectangle with margin
 
-> Note: The current repository did not include Mozilla Reference Browser sources. This commit adds the reusable core logic and tests first, so it can be integrated into a real GeckoView fork in Milestones 1-5.
+> Note: The current repository does not include Mozilla Reference Browser app sources yet. This code is prepared to be integrated into a real GeckoView browser project.
 
-## What was added
+## What is available now
 
 - `aiassistant-core` Gradle module (Kotlin/JVM)
 - Settings domain models:
@@ -28,6 +28,24 @@ This repository now contains a Kotlin core module that implements two critical f
 ```bash
 gradle :aiassistant-core:test
 ```
+
+## Release workflow (current stage)
+
+To create a source release archive for the current state:
+
+```bash
+./scripts/create_release.sh 0.1.1
+```
+
+Output:
+- `build/releases/camera-classifier-v0.1.1-source.tar.gz`
+
+## Persian user guide
+
+A Persian usage guide is available at:
+- `docs/USAGE_FA.md`
+
+This guide will be updated in future changes as requested.
 
 ## Integration guidance for Android Reference Browser fork
 
@@ -65,6 +83,6 @@ Response extraction strategy:
 
 ## Current limitations
 
-- No GeckoView app is included in this repository.
-- No APK output is generated from this commit.
-- Only visible-area crop math and settings foundation are implemented here.
+- No GeckoView Android app module is included in this repository yet.
+- No installable APK is generated from this repository in the current stage.
+- Current deliverable is the reusable core logic required for later milestones.
